@@ -1,0 +1,42 @@
+{
+	"name": "xpathed",
+	"version": "0.0.1",
+	"description": "High performance Node.js library to extract and parse XML into JS values.",
+	"homepage": "https://github.com/finlayacourt/xpathed",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/finlayacourt/xpathed.git"
+	},
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"files": [
+		"binding.gyp",
+		"src/**",
+		"lib/**",
+		"prebuilds"
+	],
+	"scripts": {
+		"install": "node-gyp-build",
+		"prebuild": "prebuildify --napi --strip",
+		"build": "node-gyp rebuild",
+		"build:debug": "node-gyp rebuild --debug --verbose",
+		"test": "uvu"
+	},
+	"license": "MIT",
+	"keywords": [
+		"xml",
+		"xpath",
+		"extract",
+		"parser",
+		"query",
+		"schema"
+	],
+	"devDependencies": {
+		"prebuildify": "^5.0.1",
+		"uvu": "^0.5.6"
+	},
+	"dependencies": {
+		"node-addon-api": "^5.1.0",
+		"node-gyp-build": "^4.6.0"
+	}
+}
