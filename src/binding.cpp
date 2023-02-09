@@ -19,17 +19,17 @@ struct Schema
 	Schema *sibling = nullptr;
 	Schema *child = nullptr;
 
-	Schema(const Napi::Env &env, const Napi::Value &input)
+	Schema(const Napi::Env &env, const Napi::Value &input, const std::string &location)
 	{
 		if (!input.IsObject())
 		{
-			throw Napi::TypeError::New(env, "should be object");
+			throw Napi::TypeError::New(env, location + " should be object");
 		}
 		auto input_object = input.As<Napi::Object>();
 		auto type_value = input_object.Get("type");
 		if (!type_value.IsString())
 		{
-			throw Napi::TypeError::New(env, "type should be string");
+			throw Napi::TypeError::New(env, location + ".type should be string");
 		}
 
 		auto type_string = type_value.As<Napi::String>().Utf8Value();
@@ -47,14 +47,14 @@ struct Schema
 		else if (type_string == "nodes")
 			type = nodes_schema;
 		else
-			throw Napi::TypeError::New(env, "type has unknown value");
+			throw Napi::TypeError::New(env, location + ".type has unknown value");
 
 		if (type == object_schema)
 		{
 			auto data_value = input_object.Get("data");
 			if (!data_value.IsObject())
 			{
-				throw Napi::TypeError::New(env, "data should be object");
+				throw Napi::TypeError::New(env, location + ".data should be object");
 			}
 			auto data_object = data_value.As<Napi::Object>();
 
@@ -65,7 +65,7 @@ struct Schema
 				for (const auto &e : data_object)
 				{
 					auto next_key = e.first.ToString().Utf8Value();
-					auto next_schema = new Schema(env, e.second);
+					auto next_schema = new Schema(env, e.second, location + "." + next_key);
 					next_schema->key = next_key;
 					if (first)
 					{
@@ -90,7 +90,7 @@ struct Schema
 			auto path_value = input_object.Get("xpath");
 			if (!path_value.IsString())
 			{
-				throw Napi::TypeError::New(env, "xpath should be string");
+				throw Napi::TypeError::New(env, location + ".xpath should be string");
 			}
 			auto path_string = path_value.As<Napi::String>().Utf8Value();
 
@@ -103,16 +103,16 @@ struct Schema
 				{
 					if (query.return_type() != pugi::xpath_type_node_set)
 					{
-						throw Napi::TypeError::New(env, "xpath should return node set");
+						throw Napi::TypeError::New(env, location + ".xpath should return node set");
 					}
 
 					auto data_value = input_object.Get("data");
-					child = new Schema(env, data_value);
+					child = new Schema(env, data_value, location + ".data");
 				}
 			}
 			catch (pugi::xpath_exception error)
 			{
-				throw Napi::Error::New(env, std::string("xpath is invalid: ") + error.what());
+				throw Napi::Error::New(env, location + ".xpath is invalid: " + error.what());
 			}
 		}
 	}
@@ -190,7 +190,7 @@ auto compile(const Napi::CallbackInfo &info)
 {
 	auto env = info.Env();
 	auto input_value = info[0];
-	auto schema = new Schema(env, input_value);
+	auto schema = new Schema(env, input_value, "$");
 	auto searcher = Napi::Function::New(env, search, "search", schema);
 	searcher.AddFinalizer(finalize<Schema>, schema);
 	return searcher;

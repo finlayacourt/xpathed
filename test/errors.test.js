@@ -6,31 +6,31 @@ const test = suite("errors");
 
 [
 	{
-		expect: "should be object",
+		expect: "$ should be object",
 		schema: "",
 	},
 	{
-		expect: "type should be string",
+		expect: "$.type should be string",
 		schema: { type: 1 },
 	},
 	{
-		expect: "type has unknown value",
+		expect: "$.type has unknown value",
 		schema: { type: "invalid" },
 	},
 	{
-		expect: "data should be object",
+		expect: "$.data should be object",
 		schema: { type: "object", data: "" },
 	},
 	{
-		expect: "xpath should be string",
+		expect: "$.xpath should be string",
 		schema: { type: "string", xpath: 1 },
 	},
 	{
-		expect: "xpath is invalid",
+		expect: "$.xpath is invalid",
 		schema: { type: "string", xpath: "%" },
 	},
 	{
-		expect: "xpath should return node set",
+		expect: "$.xpath should return node set",
 		schema: {
 			type: "nodes",
 			xpath: "count(*)",
