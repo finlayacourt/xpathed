@@ -17,7 +17,7 @@
 	],
 	"scripts": {
 		"install": "node-gyp-build",
-		"prebuild": "prebuildify --napi --strip",
+		"prebuild": "prebuildify --napi",
 		"build": "node-gyp rebuild",
 		"build:debug": "node-gyp rebuild --debug --verbose",
 		"test": "uvu test \\.test\\.js$"
