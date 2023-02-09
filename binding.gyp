@@ -4,7 +4,7 @@
             "target_name": "xpathed",
             "cflags!": ["-fno-exceptions"],
             "cflags_cc!": ["-fno-exceptions"],
-            "sources": ["src/binding.cpp"],
+            "sources": ["src/binding.cpp", "src/pugixml.cpp"],
             "include_dirs": ["<!@(node -p \"require('node-addon-api').include\")"],
             "defines": [],
             "conditions": [
