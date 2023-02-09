@@ -60,22 +60,30 @@ struct Schema
 
 			auto first = true;
 			auto current = this;
-			for (const auto &e : data_object)
+			try
 			{
-				auto next_key = e.first.ToString().Utf8Value();
-				auto next_schema = new Schema(env, e.second);
-				next_schema->key = next_key;
-				if (first)
+				for (const auto &e : data_object)
 				{
-					current->child = next_schema;
-					first = false;
+					auto next_key = e.first.ToString().Utf8Value();
+					auto next_schema = new Schema(env, e.second);
+					next_schema->key = next_key;
+					if (first)
+					{
+						current->child = next_schema;
+						first = false;
+					}
+					else
+					{
+						current->sibling = next_schema;
+					}
+					current = next_schema;
 				}
-				else
-				{
-					current->sibling = next_schema;
-				}
-				current = next_schema;
 			}
+			catch (...)
+			{
+				delete child;
+				throw;
+			};
 		}
 		else
 		{
