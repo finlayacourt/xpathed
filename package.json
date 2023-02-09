@@ -1,6 +1,6 @@
 {
 	"name": "xpathed",
-	"version": "0.0.1",
+	"version": "1.0.1",
 	"description": "High performance Node.js library to extract and parse XML into JS values.",
 	"homepage": "https://github.com/finlayacourt/xpathed",
 	"repository": {
