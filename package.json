@@ -20,7 +20,7 @@
 		"prebuild": "prebuildify --napi --strip",
 		"build": "node-gyp rebuild",
 		"build:debug": "node-gyp rebuild --debug --verbose",
-		"test": "uvu"
+		"test": "uvu test \\.test\\.js$"
 	},
 	"license": "MIT",
 	"keywords": [

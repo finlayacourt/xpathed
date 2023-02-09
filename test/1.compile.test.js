@@ -1,8 +1,13 @@
 const { suite } = require("uvu");
 const assert = require("uvu/assert");
-const { compile } = require("..");
+const xpathed = require("..");
+const { schema } = require("./fixtures");
 
-const test = suite("errors");
+const test = suite("compile");
+
+test("import", () => {
+	assert.type(xpathed.compile, "function");
+});
 
 [
 	{
@@ -40,10 +45,14 @@ const test = suite("errors");
 ].forEach(({ expect, schema }) => {
 	test(expect, () => {
 		assert.throws(
-			() => compile(schema),
+			() => xpathed.compile(schema),
 			(err) => err.toString().includes(expect)
 		);
 	});
+});
+
+test("compile", () => {
+	assert.type(xpathed.compile(schema), "function");
 });
 
 test.run();
