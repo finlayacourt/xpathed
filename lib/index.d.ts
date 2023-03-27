@@ -52,7 +52,7 @@ export type SchemaToData<S extends Schema> = S extends SchemaString
 	? SchemaToData<S["data"]>[]
 	: never;
 
-export interface Document extends Object {}
+export enum Document {}
 
 export function compile<S extends Schema>(
 	schema: S
